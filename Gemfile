@@ -1,5 +1,6 @@
 source "http://rubygems.org"
 
+gem "rake"
 gem "sinatra", :require => ["sinatra/base"]
 gem "activerecord"
 gem "erubis"
@@ -9,6 +10,7 @@ group :test do
 end
 
 group :development do
+  gem "pry"
   gem "ey"
   gem "rerun"
   gem "thin"

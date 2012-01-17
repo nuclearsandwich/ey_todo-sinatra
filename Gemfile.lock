@@ -14,26 +14,39 @@ GEM
       multi_json (~> 1.0)
     arel (2.2.1)
     builder (3.0.0)
+    coderay (0.9.8)
     daemons (1.1.5)
     erubis (2.7.0)
     eventmachine (0.12.10)
     ey (0.0.8)
     i18n (0.6.0)
+    method_source (0.6.7)
+      ruby_parser (>= 2.3.1)
     minitest (2.10.0)
     multi_json (1.0.4)
     mustache (0.99.4)
+    pry (0.9.7.4)
+      coderay (~> 0.9.8)
+      method_source (~> 0.6.7)
+      ruby_parser (>= 2.3.1)
+      slop (~> 2.1.0)
     rack (1.4.0)
     rack-protection (1.2.0)
       rack
+    rake (0.9.2.2)
     rdiscount (1.6.8)
     rerun (0.6.5)
     rocco (0.7)
       mustache
       rdiscount
+    ruby_parser (2.3.1)
+      sexp_processor (~> 3.0)
+    sexp_processor (3.0.10)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
       tilt (~> 1.3, >= 1.3.3)
+    slop (2.1.0)
     thin (1.3.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -49,6 +62,8 @@ DEPENDENCIES
   erubis
   ey
   minitest
+  pry
+  rake
   rerun
   rocco (= 0.7)
   sinatra
