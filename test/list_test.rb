@@ -6,6 +6,9 @@ require_relative "../models/list"
 class ListTest < MiniTest::Unit::TestCase
   def setup
     @list = Todo::List.new "Secret Mission"
+    @completed_tasks = Array.new 4, OpenStruct.new(:completed? => true)
+    @unfinished_tasks = Array.new 3, OpenStruct.new(:completed? => false)
+
   end
 
   def test_list_creation
@@ -22,20 +25,14 @@ class ListTest < MiniTest::Unit::TestCase
     assert_includes @list.instance_eval{ @tasks }, task
   end
 
-  def test_each_task_returns_enumerator
-    assert_equal Enumerator, @list.each_task.class
+  def test_completed_tasks_contains_only_completed_tasks
+    assert @list.completed_tasks.all?(&:completed?),
+      "Incomplete task found in completed_tasks"
   end
 
-  def test_each_task_can_take_a_block
-    tasks_from_block = []
-    @list.add_task :foobar
-    @list.add_task :bazqux
-
-    @list.each_task do |task|
-      tasks_from_block << task
-    end
-
-    assert_equal 2, tasks_from_block.size
+  def test_unfinished_tasks_contains_no_completed_tasks
+    refute @list.unfinished_tasks.any?(&:completed?),
+      "Completed task found in unfinished_tasks"
   end
 
   def test_each_list_has_unique_id
