@@ -34,5 +34,9 @@ class TaskTest < MiniTest::Unit::TestCase
     @task.uncomplete!
     refute @task.completed?, "Task marked complete."
   end
+
+  def test_each_task_has_unique_id
+    @task.id != Todo::Task.new("A Different Task").id
+  end
 end
 
