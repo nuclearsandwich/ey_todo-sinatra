@@ -29,16 +29,23 @@ module Todo
     ## POST /lists
     # Create a new list with the given name, then return to `/`.
     post "/lists" do
-      List.all << List.new(params[:list][:name])
+      List.new(params[:list][:name])
       redirect "/"
     end
 
     ## POST /tasks
     # Create a new task with the given name, then return to the correct tab of
     # '/'.
+    # ## Parameters of `task`.
+    # - `name`: The name of the task. For example, "Walk the pug".
+    # - `list_id`: The unique identifier of the list to which the task should be
+    #   added.
+    # - `completed`: The truth value of the task's competion status.
     post "/tasks" do
       @task = Task.new params[:task][:name]
-      List.all.find{ |l| l.id == params[:task][:list_id] }.add_task @task
+      puts params[:task]
+      List.find_by_id(params[:task][:list_id]).add_task @task
+      redirect "/"
     end
   end
 end
