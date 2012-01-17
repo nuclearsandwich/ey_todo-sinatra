@@ -4,8 +4,16 @@
 require "bundler"
 Bundler.require
 
+# Require models.
+require_relative "models/list"
+require_relative "models/task"
+
+# The entire application is nested within the `Todo` module.
 module Todo
+
+  # The main Sinatra Application. This is the app that is run in `config.ru`.
   class App < Sinatra::Base
+
     # Use Erubis for template compilation. Essentially a faster ERB.
     Tilt.register :erb, Tilt[:erubis]
 
@@ -14,7 +22,18 @@ module Todo
     # set of lists with a new list tab. The first list's tasks are displayed as
     # well.
     get "/" do
-      erb :root
+      @lists = List.all
+      erb :show_tasks
+    end
+
+    post "/lists" do
+      List.all << List.new(params[:list][:name])
+      redirect "/"
+    end
+
+    post "/tasks" do
+      @task = Task.new params[:task][:name]
+      List.all.find{ |l| l.id == params[:task][:list_id] }.add_task @task
     end
   end
 end
