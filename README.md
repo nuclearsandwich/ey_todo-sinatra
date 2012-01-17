@@ -7,6 +7,9 @@ Getting It
 Clone it using Git or Mercurial.
 
 `hg clone https://bitbucket.org/nuclearsandwich/sinatra_todo`
+
+or
+
 `git clone git://github.com/nuclearsandwich/sinatra_todo.git` (Coming Soon)
 
 Running It
