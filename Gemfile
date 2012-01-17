@@ -12,4 +12,5 @@ group :development do
   gem "ey"
   gem "rerun"
   gem "thin"
+  gem "rocco", "0.7"
 end
