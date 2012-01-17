@@ -37,5 +37,9 @@ class ListTest < MiniTest::Unit::TestCase
 
     assert_equal 2, tasks_from_block.size
   end
+
+  def test_each_list_has_unique_id
+    @list.id != Todo::List.new("A Different List").id
+  end
 end
 
