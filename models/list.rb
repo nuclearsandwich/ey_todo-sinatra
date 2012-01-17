@@ -20,7 +20,7 @@ module Todo
 
     # A collection of all unfinished tasks.
     def unfinished_tasks
-      @tasks.reject(&:completed)
+      @tasks.reject(&:completed?)
     end
 
     # # Class Management Features

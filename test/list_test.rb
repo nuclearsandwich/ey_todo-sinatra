@@ -26,11 +26,17 @@ class ListTest < MiniTest::Unit::TestCase
   end
 
   def test_completed_tasks_contains_only_completed_tasks
+    (@completed_tasks + @unfinished_tasks).each do |t|
+      @list.add_task t
+    end
     assert @list.completed_tasks.all?(&:completed?),
       "Incomplete task found in completed_tasks"
   end
 
   def test_unfinished_tasks_contains_no_completed_tasks
+    (@completed_tasks + @unfinished_tasks).each do |t|
+      @list.add_task t
+    end
     refute @list.unfinished_tasks.any?(&:completed?),
       "Completed task found in unfinished_tasks"
   end
