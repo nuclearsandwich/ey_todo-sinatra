@@ -12,9 +12,11 @@
         <form action="/tasks" method="post" name="new_task">
           <input type="hidden" name="task[list_id]" value="<%= list.id %>" />
           <input type="hidden" name="task[completed]" value="" />
-          <div id="split-fields">
+          <div class="split-fields">
             <div class="field">
-              <input type="text" name="task[name]" value="" label="false" placeholder="Enter a new task"/>
+              <div class="input string required">
+                <input siz="50" required="required" type="text" name="task[name]" value="" label="false" placeholder="Enter a new task"/>
+              </div>
             </div>
 
             <div class="button">
@@ -25,24 +27,22 @@
       </div>
 
       <ul class="tasks pending-tasks">
-        <% list.each_task do |task| %>
-          <% unless task.completed? %>
-            <form action="/list/<%= list.id %>/tasks/<%= task.id %>" method="put">
-              <li><input class="box" type="checkbox" name="task[done]" value="false" label="false" /></li>
-              <li><input type="hidden" name="task[list_id]" value="<%= list.id %>" /></li>
-            </form>
-            <p class="delete-task"><a href="/list/<%= list.id %>tasks/<%= task.id %>" method="delete">X</a></p>
-          <% end %>
+        <% list.unfinished_tasks.each do |task| %>
+          <form action="/list/<%= list.id %>/tasks/<%= task.id %>" method="put">
+            <li>
+              <input class="box" type="checkbox" name="task[done]" value="false" label="false" />
+              <input type="hidden" name="task[list_id]" value="<%= list.id %>" />
+              <p class="delete-task"><a href="/list/<%= list.id %>/tasks/<%= task.id %>" method="delete">X</a></p>
+            </li>
+          </form>
         <% end %>
       </ul>
 
       <ul class="tasks finished-tasks">
-        <% list.each_task do |task| %>
-          <% if task.completed? %>
-            <li class="finished">
+        <% list.completed_tasks.each do |task| %>
+          <li class="finished">
             <p class="delete-task"><a href="/list/<%= list.id %>tasks/<%= task.id %>" method="delete">X</a></p>
-            </li>
-          <% end %>
+          </li>
         <% end %>
       </ul>
     </div>
