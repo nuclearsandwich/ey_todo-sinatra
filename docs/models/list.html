@@ -37,11 +37,12 @@
       <td class=code>
         <div class='highlight'><pre><span class="k">module</span> <span class="nn">Todo</span>
   <span class="k">class</span> <span class="nc">List</span>
-    <span class="kp">attr_reader</span> <span class="ss">:name</span>
+    <span class="kp">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:id</span>
 
     <span class="k">def</span> <span class="nf">initialize</span> <span class="n">list_name</span>
       <span class="vi">@name</span> <span class="o">=</span> <span class="n">list_name</span>
       <span class="vi">@tasks</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="vi">@id</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">next_id</span>
     <span class="k">end</span>
 
     <span class="k">def</span> <span class="nf">add_task</span> <span class="n">task</span>
@@ -54,6 +55,16 @@
       <span class="k">else</span>
         <span class="vi">@tasks</span><span class="o">.</span><span class="n">each</span>
       <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="vi">@id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">next_id</span>
+      <span class="vi">@id</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">end</span>
+
+    <span class="vi">@all_lists</span> <span class="o">=</span> <span class="o">[]</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+      <span class="vi">@all_lists</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span></pre></div>

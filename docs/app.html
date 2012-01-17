@@ -46,16 +46,47 @@
       </td>
       <td class=code>
         <div class='highlight'><pre><span class="nb">require</span> <span class="s2">&quot;bundler&quot;</span>
-<span class="no">Bundler</span><span class="o">.</span><span class="n">require</span>
-
-<span class="k">module</span> <span class="nn">Todo</span>
-  <span class="k">class</span> <span class="nc">App</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Base</span></pre></div>
+<span class="no">Bundler</span><span class="o">.</span><span class="n">require</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
       <td class=docs>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>Require models.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">require_relative</span> <span class="s2">&quot;models/list&quot;</span>
+<span class="n">require_relative</span> <span class="s2">&quot;models/task&quot;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>The entire application is nested within the <code>Todo</code> module.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">module</span> <span class="nn">Todo</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>The main Sinatra Application. This is the app that is run in <code>config.ru</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">class</span> <span class="nc">App</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Base</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
         </div>
         <p>Use Erubis for template compilation. Essentially a faster ERB.</p>
       </td>
@@ -77,7 +108,18 @@ well.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="n">get</span> <span class="s2">&quot;/&quot;</span> <span class="k">do</span>
-      <span class="n">erb</span> <span class="ss">:root</span>
+      <span class="vi">@lists</span> <span class="o">=</span> <span class="no">List</span><span class="o">.</span><span class="n">all</span>
+      <span class="n">erb</span> <span class="ss">:show_tasks</span>
+    <span class="k">end</span>
+
+    <span class="n">post</span> <span class="s2">&quot;/lists&quot;</span> <span class="k">do</span>
+      <span class="no">List</span><span class="o">.</span><span class="n">all</span> <span class="o">&lt;&lt;</span> <span class="no">List</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:list</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span><span class="p">)</span>
+      <span class="n">redirect</span> <span class="s2">&quot;/&quot;</span>
+    <span class="k">end</span>
+
+    <span class="n">post</span> <span class="s2">&quot;/tasks&quot;</span> <span class="k">do</span>
+      <span class="vi">@task</span> <span class="o">=</span> <span class="no">Task</span><span class="o">.</span><span class="n">new</span> <span class="n">params</span><span class="o">[</span><span class="ss">:task</span><span class="o">][</span><span class="ss">:name</span><span class="o">]</span>
+      <span class="no">List</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">l</span><span class="o">|</span> <span class="n">l</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">params</span><span class="o">[</span><span class="ss">:task</span><span class="o">][</span><span class="ss">:list_id</span><span class="o">]</span> <span class="p">}</span><span class="o">.</span><span class="n">add_task</span> <span class="vi">@task</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span></pre></div>
