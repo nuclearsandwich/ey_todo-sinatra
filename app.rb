@@ -26,11 +26,16 @@ module Todo
       erb :show_tasks
     end
 
+    ## POST /lists
+    # Create a new list with the given name, then return to `/`.
     post "/lists" do
       List.all << List.new(params[:list][:name])
       redirect "/"
     end
 
+    ## POST /tasks
+    # Create a new task with the given name, then return to the correct tab of
+    # '/'.
     post "/tasks" do
       @task = Task.new params[:task][:name]
       List.all.find{ |l| l.id == params[:task][:list_id] }.add_task @task
