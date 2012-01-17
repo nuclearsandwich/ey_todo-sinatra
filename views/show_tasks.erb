@@ -1,0 +1,69 @@
+<div id="tabs">
+  <ul>
+    <% @lists.each_with_index do |list, counter| %>
+      <li><a href="#tabs-<%= counter + 1 %>"><%= list.name %></a></li>
+    <% end %>
+    <li><a href="#tabs-new-list">Add List +</a></li>
+  </ul>
+
+  <% @lists.each_with_index do |list, counter| %>
+    <div id="tabs-<%= counter %>" class="tab">
+      <div class="new-task">
+        <form action="/tasks" method="post" name="new_task">
+          <input type="hidden" name="task[list_id]" value="<%= list.id %>" />
+          <input type="hidden" name="task[completed]" value="" />
+          <div id="split-fields">
+            <div class="field">
+              <input type="text" name="task[name]" value="" label="false" placeholder="Enter a new task"/>
+            </div>
+
+            <div class="button">
+              <input type="submit" name="Add Task" value="submit" />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <ul class="tasks pending-tasks">
+        <% list.each_task do |task| %>
+          <% unless task.completed? %>
+            <form action="/list/<%= list.id %>/tasks/<%= task.id %>" method="put">
+              <li><input class="box" type="checkbox" name="task[done]" value="false" label="false" /></li>
+              <li><input type="hidden" name="task[list_id]" value="<%= list.id %>" /></li>
+            </form>
+            <p class="delete-task"><a href="/list/<%= list.id %>tasks/<%= task.id %>" method="delete">X</a></p>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <ul class="tasks finished-tasks">
+        <% list.each_task do |task| %>
+          <% if task.completed? %>
+            <li class="finished">
+            <p class="delete-task"><a href="/list/<%= list.id %>tasks/<%= task.id %>" method="delete">X</a></p>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+
+    <p class="delete-list">
+    <a href="/list/<%= list.id %>" method="delete">Delete this list</a>
+    </p>
+  <% end %>
+
+  <div id="tabs-new-list">
+    <h2>Add a New Task List</h2>
+    <form action="/lists" method="post">
+      <div class="split-fields">
+        <div class="field">
+          <input type="text" placeholder="Name" name="list[name]" value="" />
+        </div>
+        <div class="button">
+          <input type="submit" name="Add List" value="Add List" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
