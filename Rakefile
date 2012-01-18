@@ -15,7 +15,7 @@ task :run do
 end
 
 task :rerun do
-  system "bin/rerun #{RUN_COMMAND}"
+  system "bin/rerun -p'./**/*.{rb,ru}' #{RUN_COMMAND}"
 end
 
 namespace :rerun do
