@@ -25,6 +25,14 @@ class ListTest < MiniTest::Unit::TestCase
     assert_includes @list.instance_eval{ @tasks }, task
   end
 
+  def test_list_can_remove_tasks
+    task = "Eat all the toffee"
+    @list.add_task task
+
+    @list.remove_task task
+    refute_includes @list.instance_eval{ @tasks }, task
+  end
+
   def test_completed_tasks_contains_only_completed_tasks
     (@completed_tasks + @unfinished_tasks).each do |t|
       @list.add_task t

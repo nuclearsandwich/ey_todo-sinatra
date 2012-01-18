@@ -13,6 +13,10 @@ module Todo
       @tasks << task
     end
 
+    def remove_task task
+      @tasks.delete task
+    end
+
     # A collection of all completed tasks.
     def completed_tasks
       @tasks.select(&:completed?)
@@ -21,6 +25,12 @@ module Todo
     # A collection of all unfinished tasks.
     def unfinished_tasks
       @tasks.reject(&:completed?)
+    end
+
+    # Destroy method mimicking ActiveRecord's
+    def destroy
+      self.class.all.reject! { |list| list == self }
+      self
     end
 
     # # Class Management Features
