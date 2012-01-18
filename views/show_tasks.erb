@@ -1,7 +1,7 @@
 <div id="tabs">
   <ul>
     <% @lists.each_with_index do |list, counter| %>
-      <li><a href="#tabs-<%= counter + 1 %>"><%= list.name %></a></li>
+      <li><a href="#tabs-<%= counter %>"><%= list.name %></a></li>
     <% end %>
     <li><a href="#tabs-new-list">Add List +</a></li>
   </ul>
@@ -28,11 +28,12 @@
 
       <ul class="tasks pending-tasks">
         <% list.unfinished_tasks.each do |task| %>
-          <form action="/list/<%= list.id %>/tasks/<%= task.id %>" method="put">
+          <form action="/lists/<%= list.id %>/tasks/<%= task.id %>" method="put">
             <li>
               <input class="box" type="checkbox" name="task[done]" value="false" label="false" />
               <input type="hidden" name="task[list_id]" value="<%= list.id %>" />
-              <p class="delete-task"><a href="/list/<%= list.id %>/tasks/<%= task.id %>" method="delete">X</a></p>
+              <%= task.name %>
+              <p class="delete-task"><a href="/lists/<%= list.id %>/tasks/<%= task.id %>" data-confirm="Are you sure?" data-method="delete">X</a></p>
             </li>
           </form>
         <% end %>
@@ -41,15 +42,16 @@
       <ul class="tasks finished-tasks">
         <% list.completed_tasks.each do |task| %>
           <li class="finished">
-            <p class="delete-task"><a href="/list/<%= list.id %>tasks/<%= task.id %>" method="delete">X</a></p>
+            <p><%= task.name %></p>
+            <p class="delete-task"><a href="/lists/<%= list.id %>tasks/<%= task.id %>" method="delete">X</a></p>
           </li>
         <% end %>
       </ul>
-    </div>
 
-    <p class="delete-list">
-    <a href="/list/<%= list.id %>" method="delete">Delete this list</a>
-    </p>
+      <p class="delete-list ">
+        <a href="/lists/<%= list.id %>" data-method="delete" data-confirm="Are you sure?">Delete this list</a>
+      </p>
+    </div>
   <% end %>
 
   <div id="tabs-new-list">
