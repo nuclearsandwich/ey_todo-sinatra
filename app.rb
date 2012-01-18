@@ -26,10 +26,49 @@ module Todo
       erb :show_tasks
     end
 
+    ## GET /lists/:list_id
+    # This renders the same page as root but allows you to specify which list
+    # is shown first. Doing this is kind of hacky, I'd like to have this get
+    # request, but redirect it to root with an anchor link specifying which tab
+    # should be shown. However, the tabbing library being used for the project
+    # doesn't pick up on the anchor link itself, but rather appears to intercept
+    # them. I would have to find a library which fixes this or fix it myself to
+    # get the desired behavior. So for now I'll imitate the behavior of the
+    # Rails 3 app.
+    get "/lists/:list_id" do
+      @lists = List.all
+      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      puts params[:list_id].class
+      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      @selected_list_index = @lists.index { |l| l.id == params[:list_id].to_i }
+      erb :show_tasks
+    end
+
     ## POST /lists
     # Create a new list with the given name, then return to `/`.
+    # ## Parameters of `list`.
+    # - `name`: The name of the list to create.
     post "/lists" do
       List.new(params[:list][:name])
+      redirect "/"
+    end
+
+
+    ## DELETE /lists/:list_id
+    # Delete the list with the given id.
+    delete "/lists/:list_id" do
+      List.find_by_id(params[:list_id]).destroy
+      redirect "/"
+    end
+
+    ## POST /lists/:list_id
+    # This is primarily a proxy for browser deletion. It does not currently have
+    # any other function.
+    post "/lists/:list_id" do
+      if params[:_method] == "delete"
+        List.find_by_id(params[:list_id]).destroy
+      end
+
       redirect "/"
     end
 
@@ -45,6 +84,28 @@ module Todo
       @task = Task.new params[:task][:name]
       puts params[:task]
       List.find_by_id(params[:task][:list_id]).add_task @task
+      redirect "/"
+    end
+
+
+    ## DELETE /lists/:list_id/tasks/:task_id
+    # Delete the specified task from the list and return to root.
+    delete "/lists/:list_id/tasks/:task_id" do
+      List.find_by_id(params[:list_id]).remove_task(
+        Task.find_by_id(params[:task_id])).destroy
+
+      redirect "/"
+    end
+
+    ## POST /lists/:list_id/tasks/:task_id
+    # This is primarily a proxy for browser deletion. It does not currently have
+    # any other function.
+    post "/lists/:list_id/tasks/:task_id" do
+      if params[:_method] == "delete"
+        List.find_by_id(params[:list_id]).remove_task(
+          Task.find_by_id(params[:task_id])).destroy
+      end
+
       redirect "/"
     end
   end

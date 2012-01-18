@@ -21,6 +21,11 @@ module Todo
       @completed = false
     end
 
+    def destroy
+      self.class.all.reject! { |task| task == self }
+      self
+    end
+
     # A function and variable for auto-incrementing IDs.
     @id = 0
     def self.next_id
