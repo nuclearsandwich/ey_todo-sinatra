@@ -34,6 +34,7 @@
         </div>
       </div>
     </div>
+
     <script type="text/javascript">
       $(".box").click(function(event) {
         $(this).parent().next().click();
@@ -41,6 +42,10 @@
 
       $(function() {
         var opts = {};
+        <% if @selected_list_index %>
+          opts.selected = <%= @selected_list_index %>
+        <% end %>
+
         $("#tabs").tabs(opts);
       });
     </script>

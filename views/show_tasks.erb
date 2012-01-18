@@ -1,13 +1,13 @@
 <div id="tabs">
   <ul>
-    <% @lists.each_with_index do |list, counter| %>
-      <li><a href="#tabs-<%= counter %>"><%= list.name %></a></li>
+    <% @lists.each do |list| %>
+      <li><a href="#tabs-<%= list.id %>"><%= list.name.capitalize %></a></li>
     <% end %>
     <li><a href="#tabs-new-list">Add List +</a></li>
   </ul>
 
-  <% @lists.each_with_index do |list, counter| %>
-    <div id="tabs-<%= counter %>" class="tab">
+  <% @lists.each do |list| %>
+    <div id="tabs-<%= list.id %>" class="tab">
       <div class="new-task">
         <form action="/tasks" method="post" name="new_task">
           <input type="hidden" name="task[list_id]" value="<%= list.id %>" />
