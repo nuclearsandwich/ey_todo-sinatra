@@ -45,9 +45,6 @@ module Todo
     # Rails 3 app.
     get "/lists/:list_id" do
       @lists = List.all
-      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      puts params[:list_id].class
-      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       @selected_list_index = @lists.index { |l| l.id == params[:list_id].to_i }
       erb :show_tasks
     end
@@ -57,7 +54,7 @@ module Todo
     # ## Parameters of `list`.
     # - `name`: The name of the list to create.
     post "/lists" do
-      List.new(params[:list][:name])
+      List.create(name: params[:list][:name])
       redirect "/"
     end
 
@@ -73,14 +70,14 @@ module Todo
     # This is primarily a proxy for browser deletion. It does not currently have
     # any other function.
     post "/lists/:list_id" do
+      # 
       if params[:_method] == "delete"
         List.find_by_id(params[:list_id]).destroy
+        redirect "/"
       end
-
-      redirect "/"
     end
 
-    ## POST /tasks
+    ## POST /lists/:list_id/tasks
     # Create a new task with the given name, then return to the correct tab of
     # '/'.
     # ## Parameters of `task`.
@@ -88,13 +85,11 @@ module Todo
     # - `list_id`: The unique identifier of the list to which the task should be
     #   added.
     # - `completed`: The truth value of the task's competion status.
-    post "/tasks" do
-      @task = Task.new params[:task][:name]
-      puts params[:task]
-      List.find_by_id(params[:task][:list_id]).add_task @task
-      redirect "/"
+    post "/lists/:list_id/tasks" do
+      @task = Task.create name: params[:task][:name]
+      List.find_by_id(params[:list_id]).add_task @task
+      redirect "/lists/#{params[:list_id]}"
     end
-
 
     ## DELETE /lists/:list_id/tasks/:task_id
     # Delete the specified task from the list and return to root.
@@ -102,19 +97,27 @@ module Todo
       List.find_by_id(params[:list_id]).remove_task(
         Task.find_by_id(params[:task_id])).destroy
 
-      redirect "/"
+      redirect "/lists/#{params[:list_id]}"
     end
 
     ## POST /lists/:list_id/tasks/:task_id
-    # This is primarily a proxy for browser deletion. It does not currently have
-    # any other function.
+    # This endpoint serves the dual purpose of acting as a proxy for the DELETE
+    # verb in browsers, as well as updating individual tasks acting as the PUT
+    # verb for updating the task's completion status.
     post "/lists/:list_id/tasks/:task_id" do
       if params[:_method] == "delete"
         List.find_by_id(params[:list_id]).remove_task(
           Task.find_by_id(params[:task_id])).destroy
+      else
+        task = Task.find_by_id(params[:task_id])
+        if params[:task][:done]
+          task.complete!
+        else
+          task.uncomplete!
+        end
       end
 
-      redirect "/"
+      redirect "/lists/#{params[:list_id]}"
     end
   end
 end
