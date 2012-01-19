@@ -3,4 +3,6 @@ syntax: glob
 .vimrc
 .redcar/*
 .bundle
+db/*.sqlite3
+config/database.yml
 

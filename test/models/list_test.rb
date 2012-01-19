@@ -1,14 +1,20 @@
 require "minitest/unit"
 require "minitest/autorun"
 require "minitest/pride"
-require_relative "../models/list"
+require_relative "../../app"
+
+include Todo
 
 class ListTest < MiniTest::Unit::TestCase
   def setup
-    @list = Todo::List.new "Secret Mission"
-    @completed_tasks = Array.new 4, OpenStruct.new(:completed? => true)
-    @unfinished_tasks = Array.new 3, OpenStruct.new(:completed? => false)
-
+    @list = List.new name: "Secret Mission"
+    current_time = Time.now
+    @completed_tasks = (1..4).map do |i|
+      Task.new name: "Completed Task ##{i}", completed_at: current_time
+    end
+    @unfinished_tasks = (1..3).map do |i|
+      Task.new name: "Unfinished Task ##{i}"
+    end
   end
 
   def test_list_creation
@@ -20,17 +26,17 @@ class ListTest < MiniTest::Unit::TestCase
   end
 
   def test_list_can_add_tasks
-    task = "1st task"
+    task = @completed_tasks.first
     @list.add_task task
-    assert_includes @list.instance_eval{ @tasks }, task
+    assert_includes @list.tasks, task
   end
 
   def test_list_can_remove_tasks
-    task = "Eat all the toffee"
+    task = @completed_tasks.first
     @list.add_task task
 
     @list.remove_task task
-    refute_includes @list.instance_eval{ @tasks }, task
+    refute_includes @list.tasks, task
   end
 
   def test_completed_tasks_contains_only_completed_tasks
@@ -47,10 +53,6 @@ class ListTest < MiniTest::Unit::TestCase
     end
     refute @list.unfinished_tasks.any?(&:completed?),
       "Completed task found in unfinished_tasks"
-  end
-
-  def test_each_list_has_unique_id
-    @list.id != Todo::List.new("A Different List").id
   end
 end
 

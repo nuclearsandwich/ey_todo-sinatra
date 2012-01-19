@@ -1,5 +1,8 @@
 # A Port of the EngineYard Todo App to Sinatra 1.3 by Steven! Ragnarök.
 
+# Require YAML to read the config file.
+require "yaml"
+
 # Use Bundler for dependency management.
 require "bundler"
 Bundler.require
@@ -10,6 +13,11 @@ require_relative "models/task"
 
 # The entire application is nested within the `Todo` module.
 module Todo
+
+  # Setup environment and connect to the database.
+  RACK_ENV = ENV['RACK_ENV'] || "development"
+  DB_SETTINGS = YAML.load_file("config/database.yml")[RACK_ENV]
+  ActiveRecord::Base.establish_connection(DB_SETTINGS)
 
   # The main Sinatra Application. This is the app that is run in `config.ru`.
   class App < Sinatra::Base

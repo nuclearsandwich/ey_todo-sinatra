@@ -1,54 +1,39 @@
 module Todo
-  class Task
-    attr_reader :name, :id
-
-    def initialize task_name
-      @name = task_name
-      @completed = false
-      @id = self.class.next_id
-      self.class.add_task_to_registry self
-    end
+  ## ActiveRecord Task Model
+  #### Schema ###
+  # - `id`: `Integer`, Primary Key
+  # - `name`: `String`
+  # - `list_id`: Integer, Foreign Key referencing List.
+  # - `created_at`: `Timestamp`
+  # - `updated_at`: `Timestamp`
+  class Task < ActiveRecord::Base
+    belongs_to :list
 
     def completed?
-      @completed
+      completed_at != nil
     end
 
     def complete!
-      @completed = true
+      update_attributes :completed_at => Time.now
     end
 
     def uncomplete!
-      @completed = false
+      update_attributes :completed_at => nil
     end
 
-    def destroy
-      self.class.all.reject! { |task| task == self }
-      self
-    end
-
-    # A function and variable for auto-incrementing IDs.
-    @id = 0
-    def self.next_id
-      @id += 1
-    end
-
-    # An array of all Task objects currently in memory.
-    @all_tasks = []
-
-    # Called by the Task#initialize to add each list to the Array.
-    def self.add_task_to_registry task
-      @all_tasks << task
-    end
-
-    # Imitates ActiveRecord's #all method.
-    def self.all
-      @all_tasks
-    end
-
-    # Imitates ActiveRecord's #find_by_id method.
-    def self.find_by_id id
-      all.find { |task| task.id == id.to_i }
-    end
+    ## Named Scopes.
+    #
+    # For a while, I preferred writing class methods rather than named scopes
+    # since I could see no effective difference between the two and class
+    # methods are ORM agnostic. I've since realized that the big win of named
+    # scopes over class methods is that named scopes work on relations whereas
+    # class methods work only on the global task object. If named scopes didn't
+    # exist, it would still be possible to use class methods to achieve the same
+    # result (by allowing the class method to take a block or lambda argument
+    # passed to Enumerable#select) but some of the object-oriented style is lost
+    # in that translation.
+    scope :unfinished, where(:completed_at => nil)
+    scope :completed, where("completed_at IS NOT NULL")
   end
 end
 

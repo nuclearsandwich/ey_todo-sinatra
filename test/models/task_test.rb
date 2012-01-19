@@ -1,11 +1,13 @@
 require "minitest/unit"
 require "minitest/autorun"
 require "minitest/pride"
-require_relative "../models/task"
+require_relative "../../app"
+
+include Todo
 
 class TaskTest < MiniTest::Unit::TestCase
   def setup
-    @task = Todo::Task.new "Walk the Pug"
+    @task = Task.new name: "Walk the Pug"
   end
 
   def test_task_creation
@@ -29,14 +31,10 @@ class TaskTest < MiniTest::Unit::TestCase
 
   def test_mark_test_incomplete
     @task.complete!
-    assert @task.completed?, "Task not marked complete."
+    assert @task.completed?, "Task did not start marked complete."
 
     @task.uncomplete!
     refute @task.completed?, "Task marked complete."
-  end
-
-  def test_each_task_has_unique_id
-    @task.id != Todo::Task.new("A Different Task").id
   end
 end
 
