@@ -31,7 +31,7 @@
             <li>
               <input class="box" type="checkbox" name="task[done]" value="false" label="false" />
               <input type="hidden" name="task[list_id]" value="<%= list.id %>" />
-              <%= auto_link task.name %>
+              <%= task.name %>
               <p class="delete-task"><a href="/lists/<%= list.id %>/tasks/<%= task.id %>" data-confirm="Are you sure?" data-method="delete" rel="nofollow">X</a></p>
               <input class="button hidden" type="submit" value="Update Task" name="commit" />
             </li>
@@ -42,8 +42,8 @@
       <ul class="tasks finished-tasks">
         <% list.completed_tasks.each do |task| %>
           <li class="finished">
-            <%= auto_link task.name %>
-            <p class="delete-task"><a href="/lists/<%= list.id %>tasks/<%= task.id %>" data-method="delete" rel="nofollow">X</a></p>
+            <%= task.name %>
+            <p class="delete-task"><a href="/lists/<%= list.id %>/tasks/<%= task.id %>" data-confirm="Are you sure?"  data-method="delete" rel="nofollow">X</a></p>
           </li>
         <% end %>
       </ul>
