@@ -4,19 +4,20 @@ Getting Things Done With EngineYard AppCloud: Sinatra Edition
 Getting It
 ----------
 
-Clone it using Git or Mercurial.
+Clone it using Git.
 
-`hg clone https://bitbucket.org/nuclearsandwich/sinatra_todo`
+`git clone git://github.com/nuclearsandwich/ey_todo-sinatra.git` (Coming Soon)
 
-or
-
-`git clone git://github.com/nuclearsandwich/sinatra_todo.git` (Coming Soon)
+After running `bundle install`, copy `config/database.template.yml` to
+`config/database.yml` and modify it to suite your local environment. Then run
+`bin/rake db:migrate` and `RACK_ENV=test bin/rake db:migrate` to create
+development and test databases.
 
 Running It
 ----------
 
-After cloning the project and running `bundle install`. You can start the app
-with `bin/rake run`.
+After cloning the project, running `bundle install` and setting up the local
+databases, you can start the app with `bin/rake run`.
 
 If you want to restart on every code change, you can use the `bin/rake rerun`
 task.
@@ -41,3 +42,5 @@ Differences from the Rails 3 App
 
 Sinatra lacks the auto_link helper and vendorizing it proved non-trivial. I plan
 to add it as I work on more of these ports.
+
+- This one has unit tests, Cucumber acceptance tests are on the way.

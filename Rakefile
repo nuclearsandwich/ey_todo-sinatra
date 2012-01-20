@@ -1,4 +1,4 @@
-# Use the standard Rake TestTask.
+
 require "rake/testtask"
 
 task :default => :test
@@ -19,7 +19,7 @@ end
 task :test => :test_env
 
 Rake::TestTask.new do |t|
-    t.test_files = FileList['test/**/*.rb']
+    t.test_files = FileList["test/**/*.rb"]
 end
 
 desc "Regenerate application documentation"
