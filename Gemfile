@@ -24,7 +24,7 @@ end
 
 group :development do
   gem "pry"
-  gem "ey"
+  gem "engineyard"
   gem "rerun"
   gem "thin"
   gem "rocco", "0.7"
