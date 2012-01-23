@@ -5,7 +5,7 @@ gem "sinatra", :require => ["sinatra/base"]
 gem "activerecord", :require => ["active_record"]
 gem "erubis"
 
-platforms :ruby_18 do
+platforms :ruby_18, :jruby do
   gem "require_relative"
 end
 
