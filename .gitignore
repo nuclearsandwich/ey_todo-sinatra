@@ -2,6 +2,7 @@
 .vimrc
 .redcar
 .bundle
+.rbx
 db/*.sqlite3
 config/database.yml
 
