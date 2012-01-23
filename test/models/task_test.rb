@@ -1,7 +1,8 @@
 require "minitest/unit"
 require "minitest/autorun"
 require "minitest/pride"
-require "./app"
+require "require_relative"
+require_relative "../../app"
 
 include Todo
 

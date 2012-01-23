@@ -8,8 +8,8 @@ require "bundler"
 Bundler.require
 
 # Require models.
-require "models/list"
-require "models/task"
+require_relative "models/list"
+require_relative "models/task"
 
 # The entire application is nested within the `Todo` module.
 module Todo

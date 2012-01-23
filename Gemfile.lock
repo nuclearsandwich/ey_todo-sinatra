@@ -36,6 +36,7 @@ GEM
       rack
     rake (0.9.2.2)
     rdiscount (1.6.8)
+    require_relative (1.0.3)
     rerun (0.6.5)
     rocco (0.7)
       mustache
@@ -67,6 +68,7 @@ DEPENDENCIES
   pg
   pry
   rake
+  require_relative
   rerun
   rocco (= 0.7)
   sinatra
