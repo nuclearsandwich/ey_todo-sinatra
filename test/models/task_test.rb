@@ -1,7 +1,7 @@
 require "minitest/unit"
 require "minitest/autorun"
 require "minitest/pride"
-require "require_relative"
+require "require_relative" if RUBY_VERSION =~ /1.8/
 require_relative "../../app"
 
 include Todo
