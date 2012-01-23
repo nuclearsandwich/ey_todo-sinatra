@@ -1,13 +1,13 @@
 require "minitest/unit"
 require "minitest/autorun"
 require "minitest/pride"
-require_relative "../../app"
+require "./app"
 
 include Todo
 
 class TaskTest < MiniTest::Unit::TestCase
   def setup
-    @task = Task.new name: "Walk the Pug"
+    @task = Task.new :name => "Walk the Pug"
   end
 
   def test_task_creation

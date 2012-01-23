@@ -8,8 +8,8 @@ require "bundler"
 Bundler.require
 
 # Require models.
-require_relative "models/list"
-require_relative "models/task"
+require "models/list"
+require "models/task"
 
 # The entire application is nested within the `Todo` module.
 module Todo
@@ -54,7 +54,7 @@ module Todo
     # ## Parameters of `list`.
     # - `name`: The name of the list to create.
     post "/lists" do
-      List.create(name: params[:list][:name])
+      List.create(:name => params[:list][:name])
       redirect "/"
     end
 
@@ -86,7 +86,7 @@ module Todo
     #   added.
     # - `completed`: The truth value of the task's competion status.
     post "/lists/:list_id/tasks" do
-      @task = Task.create name: params[:task][:name]
+      @task = Task.create :name => params[:task][:name]
       List.find_by_id(params[:list_id]).add_task @task
       redirect "/lists/#{params[:list_id]}"
     end
