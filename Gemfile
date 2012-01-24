@@ -9,8 +9,11 @@ platforms :ruby_18, :jruby do
   gem "require_relative"
 end
 
+
+
 group :production do
-  gem "pg"
+  gem "pg", :platforms => :ruby
+  gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
 end
 
 group :test, :development do
